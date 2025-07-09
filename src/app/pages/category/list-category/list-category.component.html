@@ -1,0 +1,63 @@
+<app-default-table
+  [data]="categories"
+  [columns]="categoryCols"
+  [rowTemplate]="categoryRowTemplate"
+  [topButtonsTemplate]="topButtons"
+  [filterTemplate]="categoryFilter"
+  [actionsTemplate]="actions"
+  [title]="'Categorias'"
+  [lazy]="true"
+  [totalRecords]="total()"
+  [rows]="limit()"
+  [page]="page()"
+  (selectionChange)="selectedCategories = $event"
+  (onLazyLoad)="onLazyLoad($event)"
+/>
+
+<ng-template #categoryRowTemplate let-cat>
+  <td>{{ cat.name }}</td>
+  <td>{{ cat.parentCategoryName }}</td>
+  <td>{{ getCategoryTypeLabel(cat.type) }}</td>
+  <td><p-toggleswitch [(ngModel)]="cat.active" (click)="toggleActive(cat)"/></td>
+</ng-template>
+
+<ng-template #actions let-cat>
+  <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" (click)="onEdit(cat)" />
+  <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="onDelete(cat)" />
+</ng-template>
+
+<ng-template #topButtons>
+  <p-button icon="pi pi-plus" label="Adicionar" (click)="onAdd()"/>
+  <p-button icon="pi pi-trash" label="Excluir Selecionados" severity="danger" [disabled]="selectedCategories.length === 0" (click)="onDeleteSelected()"/>
+</ng-template>
+
+<ng-template #categoryFilter>
+  <form [formGroup]="form" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 items-end">
+    <div class="flex flex-col gap-2">
+      <div class="font-semibold text-md">Nome</div>
+      <input pInputText type="text" placeholder="Buscar por nome" formControlName="name"/>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <div class="font-semibold text-md">Tipo</div>
+      <p-select [options]="typesOptions" formControlName="type" optionLabel="label" optionValue="value" placeholder="Selecione o tipo" />
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <div class="font-semibold text-md">Status</div>
+      <p-select [options]="activeOptions" formControlName="active" optionLabel="label" optionValue="value" placeholder="Selecione o status" />
+    </div>
+
+    <div class="flex gap-2 md:justify-end sm:col-span-2 md:col-span-1">
+      <p-button type="button" icon="pi pi-filter" label="Filtrar" (click)="search()" class="w-full md:w-auto"/>
+      <p-button type="button" icon="pi pi-filter-slash" label="Limpar" severity="secondary" (click)="clear()" class="w-full md:w-auto"/>
+    </div>
+  </form>
+</ng-template>
+
+<app-form-category
+  [visible]="modalFormVisible"
+  [title]="editingCategory ? 'Editar Categoria' : 'Nova Categoria'"
+  [category]="editingCategory"
+  (onClose)="closeModalForm($event)"
+/>
