@@ -5,6 +5,7 @@ export interface Category {
   name: string;
   type: number;
   active: boolean;
+  parentCategoryId: string;
   parentCategoryName: string;
 }
 

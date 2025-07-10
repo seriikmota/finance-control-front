@@ -31,7 +31,7 @@ export class LayoutService {
     preset: 'Aura',
     primary: 'green',
     surface: 'zinc',
-    darkTheme: false,
+    darkTheme: true,
     menuMode: 'static'
   };
 
@@ -84,6 +84,7 @@ export class LayoutService {
       const config = this.layoutConfig();
       if (config) {
         this.onConfigUpdate();
+        this.toggleDarkMode(config);
       }
     });
 

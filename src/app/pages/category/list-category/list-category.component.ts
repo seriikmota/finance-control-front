@@ -1,7 +1,7 @@
 import {Component, signal, WritableSignal} from '@angular/core';
 import {Category, CategoryTypes} from '../model/category.model';
 import {TableModule} from 'primeng/table';
-import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DropdownModule} from 'primeng/dropdown';
 import {Button} from 'primeng/button';
 import {InputText} from 'primeng/inputtext';
@@ -13,7 +13,7 @@ import {FormCategoryComponent} from '../form-category/form-category.component';
 import {BaseEnum} from '../../../core/interfaces/enum.type';
 import {NotificationService} from '../../../shared/services/notification.service';
 import {PaginationResult} from '../../../core/interfaces/pagination.dto';
-import {finalize, forkJoin, from, mergeMap, tap} from 'rxjs';
+import {finalize, from, mergeMap, tap} from 'rxjs';
 
 @Component({
   selector: 'app-list-category',
@@ -114,7 +114,7 @@ export class ListCategoryComponent {
     this.notificationService.showConfirmation(
       `Deseja realmente excluir a categoria "${category.name}"?`,
       () => {
-        this.categoryService.delete(category.id).subscribe(res => {
+        this.categoryService.delete(category.id).subscribe(() => {
           this.notificationService.showSuccess(`Categoria "${category.name}" excluida com sucesso.`)
           this.search();
         })
@@ -151,11 +151,16 @@ export class ListCategoryComponent {
   }
 
   toggleActive(cat: Category) {
-    this.categoryService.patch(cat.id, cat).subscribe(res => {
-      if (res.active) {
-        this.notificationService.showSuccess('Categoria ativada com sucesso');
-      } else {
-        this.notificationService.showSuccess('Categoria desativada com sucesso');
+    this.categoryService.patch(cat.id, { active: cat.active}).subscribe({
+      next: (res: any) => {
+        if (res.active) {
+          this.notificationService.showSuccess('Categoria ativada com sucesso');
+        } else {
+          this.notificationService.showSuccess('Categoria desativada com sucesso');
+        }
+      },
+      error: () => {
+        cat.active = !cat.active;
       }
     })
   }

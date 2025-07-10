@@ -15,7 +15,11 @@
         </div>
         <div>
           <label for="typeLabel" class="block font-bold mb-3">Tipo</label>
-          <p-select formControlName="type" inputId="typeLabel" [options]="CategoryTypes" optionLabel="label" placeholder="Selecione o tipo" fluid />
+          <p-select formControlName="type" inputId="typeLabel" [options]="CategoryTypes" optionLabel="label" optionValue="value" placeholder="Selecione o tipo" fluid (onChange)="this.form.get('parentCategory')?.reset(); this.loadParentCategories()" />
+        </div>
+        <div class="w-full">
+          <label class="block font-bold mb-3">Categoria Pai</label>
+          <p-autocomplete formControlName="parentCategory" [suggestions]="listFilterParentCat" optionLabel="name" placeholder="Selecione a categoria pai" mes dropdown display="chip" (completeMethod)="filterParentCat($event)"></p-autocomplete>
         </div>
         <div>
           <label for="description" class="block font-bold mb-3">Descrição</label>

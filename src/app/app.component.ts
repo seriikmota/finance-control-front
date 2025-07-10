@@ -7,6 +7,7 @@ import {NgClass} from '@angular/common';
 import {LayoutService} from './layout/layout.service';
 import {Toast} from 'primeng/toast';
 import {ConfirmDialog} from 'primeng/confirmdialog';
+import {LoadingComponent} from './core/components/loading.component';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,8 @@ import {ConfirmDialog} from 'primeng/confirmdialog';
     SidebarComponent,
     NgClass,
     Toast,
-    ConfirmDialog
+    ConfirmDialog,
+    LoadingComponent
   ],
   template: `
     <div class="layout-wrapper" [ngClass]="containerClass">
@@ -33,6 +35,7 @@ import {ConfirmDialog} from 'primeng/confirmdialog';
     </div>
     <p-toast/>
     <p-confirmDialog/>
+    <app-loading/>
   `,
   styleUrl: './app.component.scss'
 })

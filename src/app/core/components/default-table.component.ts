@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output, Signal, TemplateRef, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, Output, Signal, TemplateRef} from '@angular/core';
 import {TableModule} from 'primeng/table';
 import {NgClass, NgFor, NgIf, NgTemplateOutlet} from '@angular/common';
 
@@ -49,7 +49,7 @@ import {NgClass, NgFor, NgIf, NgTemplateOutlet} from '@angular/common';
 
       <ng-template pTemplate="header">
         <tr>
-          <th style="width: 3rem">
+          <th *ngIf="useCheckbox" style="width: 3rem">
             <p-tableHeaderCheckbox/>
           </th>
           <th *ngFor="let col of columns" [pSortableColumn]="col.sortable ? col.field : ''">{{ col.header }} <p-sortIcon *ngIf="col.sortable" [field]="col.field" />
@@ -59,7 +59,7 @@ import {NgClass, NgFor, NgIf, NgTemplateOutlet} from '@angular/common';
 
       <ng-template pTemplate="body" let-row>
         <tr (click)="onRowClick.emit(row)" [ngClass]="{ 'cursor-pointer' : hasRowClick() }">
-          <td><p-tableCheckbox [value]="row" /></td>
+          <td *ngIf="useCheckbox"><p-tableCheckbox [value]="row" /></td>
           <ng-container *ngTemplateOutlet="rowTemplate; context: { $implicit: row }"/>
           <td *ngIf="actionsTemplate" class="w-[300px]">
             <div class="flex gap-1 items-center">
@@ -85,6 +85,7 @@ export class DefaultTableComponent<T extends { id: any }> {
   @Input() totalRecords = 0;
   @Input() rows = 10;
   @Input() page = 1;
+  @Input() useCheckbox = false;
 
   @Output() onLazyLoad = new EventEmitter<any>();
   @Output() selectionChange = new EventEmitter<T[]>();

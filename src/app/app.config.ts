@@ -8,12 +8,13 @@ import {providePrimeNG} from 'primeng/config';
 import Aura from '@primeng/themes/aura';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {httpErrorInterceptor} from './core/interceptors/http-error.interceptor';
+import {loadingInterceptor} from './core/interceptors/loading.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([httpErrorInterceptor])),
+    provideHttpClient(withInterceptors([httpErrorInterceptor, loadingInterceptor])),
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {
