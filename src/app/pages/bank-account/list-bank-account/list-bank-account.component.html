@@ -1,0 +1,58 @@
+<app-default-table
+  [data]="data"
+  [columns]="cols"
+  [rowTemplate]="rowTemplate"
+  [topButtonsTemplate]="topButtonsTemplate"
+  [filterTemplate]="filterTemplate"
+  [actionsTemplate]="actionsTemplate"
+  [title]="'Contas Bancárias'"
+  [lazy]="true"
+  [totalRecords]="total()"
+  [rows]="limit()"
+  [page]="page()"
+  [useCheckbox]="true"
+  (selectionChange)="selectedItems = $event"
+  (onLazyLoad)="onLazyLoad($event)"
+/>
+
+<ng-template #rowTemplate let-obj>
+  <td>{{ obj.name }}</td>
+  <td>{{ obj.currentBalance }}</td>
+  <td><p-toggleswitch [(ngModel)]="obj.active" (click)="toggleActive(obj)"/></td>
+</ng-template>
+
+<ng-template #actionsTemplate let-obj>
+  <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" (click)="onEdit(obj)" />
+  <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="onDelete(obj)" />
+</ng-template>
+
+<ng-template #topButtonsTemplate>
+  <p-button icon="pi pi-plus" label="Adicionar" (click)="onAdd()"/>
+  <p-button icon="pi pi-trash" label="Excluir Selecionados" severity="danger" [disabled]="selectedItems.length === 0" (click)="onDeleteSelected()"/>
+</ng-template>
+
+<ng-template #filterTemplate>
+  <form [formGroup]="form" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 items-end" (keydown.enter)="this.search()">
+    <div class="flex flex-col gap-2">
+      <div class="font-semibold text-md">Nome</div>
+      <input pInputText type="text" placeholder="Buscar por nome" formControlName="name"/>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <div class="font-semibold text-md">Status</div>
+      <p-select [options]="activeOptions" formControlName="active" optionLabel="label" optionValue="value" placeholder="Selecione o status" />
+    </div>
+
+    <div class="flex gap-2 md:justify-end sm:col-span-2 md:col-span-1">
+      <p-button type="button" icon="pi pi-filter" label="Filtrar" (click)="search()" class="w-full md:w-auto"/>
+      <p-button type="button" icon="pi pi-filter-slash" label="Limpar" severity="secondary" (click)="clear()" class="w-full md:w-auto"/>
+    </div>
+  </form>
+</ng-template>
+
+<app-form-bank-account
+  [visible]="modalFormVisible"
+  [title]="editingObj ? 'Editar Conta Bancária' : 'Nova Conta Bancária'"
+  [bankAccount]="editingObj"
+  (onClose)="closeModalForm($event)"
+/>
