@@ -1,0 +1,39 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [style]="{ width: '550px' }"
+  [header]="title"
+  (onHide)="close()"
+>
+
+  <ng-template #content>
+    <form [formGroup]="form">
+      <div class="flex flex-col gap-8 mt-1">
+        <div>
+          <label for="name" class="block font-bold mb-3">Name</label>
+          <input type="text" pInputText id="name" formControlName="name" required autofocus fluid />
+        </div>
+        <div *ngIf="!isEditing">
+          <label for="typeLabel" class="block font-bold mb-3">Saldo Inicial</label>
+          <p-inputgroup>
+            <p-inputgroup-addon>
+              <i class="pi pi-dollar"></i>
+            </p-inputgroup-addon>
+            <p-inputNumber inputId="balance" formControlName="initialBalance" mode="currency" currency="BRL" locale="pt-BR" [minFractionDigits]="2" [maxFractionDigits]="2" class="w-full"/>
+          </p-inputgroup>
+        </div>
+        <div class="flex gap-4">
+          <label for="active" class="block font-bold mt-0">Status</label>
+          <p-toggleswitch formControlName="active"/>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #footer>
+    <div class="mt-1">
+      <p-button label="Cancelar" icon="pi pi-times" text (click)="close()" />
+      <p-button label="Salvar" icon="pi pi-check" (click)="submit()" [disabled]="form.invalid"/>
+    </div>
+  </ng-template>
+</p-dialog>

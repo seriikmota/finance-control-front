@@ -1,5 +1,5 @@
-import {Component, inject} from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {Component, inject, OnInit} from '@angular/core';
+import {RouterOutlet} from '@angular/router';
 import {TopbarComponent} from './layout/topbar.component';
 import {SidebarComponent} from './layout/sidebar.component';
 import {FooterComponent} from './layout/footer.component';
@@ -8,6 +8,7 @@ import {LayoutService} from './layout/layout.service';
 import {Toast} from 'primeng/toast';
 import {ConfirmDialog} from 'primeng/confirmdialog';
 import {LoadingComponent} from './core/components/loading.component';
+import {PrimeNG} from 'primeng/config';
 
 @Component({
   selector: 'app-root',
@@ -39,8 +40,26 @@ import {LoadingComponent} from './core/components/loading.component';
   `,
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
-  private layoutService = inject(LayoutService)
+export class AppComponent implements OnInit {
+  private layoutService = inject(LayoutService);
+  private configPrimeNG = inject(PrimeNG);
+
+  ngOnInit() {
+    this.configPrimeNG.setTranslation({
+      apply: 'Aplicar',
+      clear: 'Limpar',
+      accept: 'Sim',
+      reject: 'Não',
+      firstDayOfWeek: 0,
+      dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+      dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+      dayNamesMin: ['Do', 'Se', 'Te', 'Qu', 'Qu', 'Se', 'Sa'],
+      monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+      monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+      today: 'Hoje',
+      dateFormat: 'dd/mm/yy',
+    });
+  }
 
   get containerClass() {
     return {

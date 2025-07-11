@@ -15,8 +15,6 @@ export class NotificationService {
       header: 'Confirmação',
       icon: 'pi pi-exclamation-triangle',
       message: message,
-      acceptLabel: 'Sim',
-      rejectLabel: 'Não',
       accept: onConfirm,
       reject: onCancel,
     });

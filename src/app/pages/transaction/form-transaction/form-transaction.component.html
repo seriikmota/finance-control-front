@@ -1,0 +1,170 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [style]="{ width: '600px' }"
+  [header]="title"
+  (onHide)="close()"
+>
+  <ng-template #content>
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="grid grid-cols-4 gap-4">
+        <div class="col-span-3">
+          <p-floatlabel variant="in">
+            <input pInputText id="label" formControlName="title" autocomplete="off" class="w-full" />
+            <label for="label">Título</label>
+          </p-floatlabel>
+        </div>
+        <div class="col-span-1">
+          <p-floatlabel variant="in">
+            <p-select
+              formControlName="type"
+              inputId="label"
+              [options]="TransactionTypes"
+              optionLabel="label"
+              optionValue="value"
+              class="w-full"
+              (onChange)="form.get('category')?.reset(); loadCategories()" />
+            <label for="label">Tipo</label>
+          </p-floatlabel>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4 mt-8">
+        <div class="col-span-1">
+          <p-floatlabel variant="in">
+            <p-inputNumber
+              inputId="value"
+              formControlName="value"
+              mode="currency"
+              currency="BRL"
+              locale="pt-BR"
+              [minFractionDigits]="2"
+              [maxFractionDigits]="2"
+              class="w-full"
+            />
+            <label for="value" class="block font-bold mb-3">Valor</label>
+          </p-floatlabel>
+        </div>
+        <div class="col-span-1">
+          <p-float-label variant="in">
+            <p-datePicker
+              formControlName="date"
+              inputId="calendar-24h"
+              [showTime]="true"
+              [hourFormat]="'24'"
+              [showIcon]="true"
+            />
+            <label for="date">Data</label>
+          </p-float-label>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-4 gap-4 mt-8">
+        <div class="col-span-2">
+          <label for="label" class="pr-4">Transação é recorrente?</label>
+          <p-checkbox formControlName="isRecurring" inputId="label" [value]="true" (onChange)="form.get('recurrenceType')?.reset()"/>
+        </div>
+
+        <div class="col-span-2">
+          <p-floatlabel variant="in">
+            <p-select
+              formControlName="recurrenceType"
+              [options]="RecurrenceTypes"
+              inputId="labelP"
+              optionLabel="label"
+              optionValue="value"
+              class="w-full"
+            />
+            <label for="labelP">Periodicidade</label>
+          </p-floatlabel>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 mt-8">
+        <div class="col-span-2">
+          <p-floatlabel variant="in">
+            <p-autoComplete
+              formControlName="category"
+              [forceSelection]="true"
+              [suggestions]="listFilterCat"
+              (completeMethod)="filterCat($event)"
+              optionLabel="name"
+              inputId="labelC"
+              dropdown
+            />
+            <label for="labelC">Categoria</label>
+          </p-floatlabel>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4 mt-8">
+        <div class="col-span-1">
+          <p-floatlabel variant="in">
+            <p-autoComplete
+              formControlName="bankAccount"
+              [forceSelection]="true"
+              [suggestions]="listFilterBan"
+              (completeMethod)="filterBan($event)"
+              optionLabel="name"
+              inputId="labelB"
+              dropdown
+            />
+            <label for="labelB">Conta Bancária</label>
+          </p-floatlabel>
+        </div>
+
+        <div class="col-span-1">
+          <p-floatlabel variant="in">
+            <p-autoComplete
+              formControlName="paymentMethod"
+              [forceSelection]="true"
+              [suggestions]="listFilterPay"
+              (completeMethod)="filterPay($event)"
+              optionLabel="name"
+              inputId="labelP"
+              dropdown
+              class="w-full"
+            />
+            <label for="labelP">Forma de Pagamento</label>
+          </p-floatlabel>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4 mt-8">
+        <div class="col-span-1">
+          <p-floatlabel variant="in">
+            <label for="location" class="block text-sm font-medium mb-1">Local</label>
+            <input id="location" pInputText formControlName="location" class="w-full" />
+          </p-floatlabel>
+        </div>
+
+        <div class="col-span-1">
+          <p-floatlabel variant="in">
+          </p-floatlabel>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4 mt-8">
+        <div class="col-span-1">
+          <p-floatlabel variant="in">
+            <textarea
+              id="label"
+              pTextarea
+              formControlName="notes"
+              rows="4"
+              class="w-full"
+            ></textarea>
+            <label for="label">Observações</label>
+          </p-floatlabel>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #footer>
+    <div class="flex justify-end gap-2">
+      <p-button label="Cancelar" icon="pi pi-times" text (click)="close()" />
+      <p-button label="Salvar" icon="pi pi-check" (click)="submit()" [disabled]="form.invalid" />
+    </div>
+  </ng-template>
+</p-dialog>

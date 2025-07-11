@@ -35,7 +35,7 @@ export class SidebarComponent {
         items: [
           { label: 'Categoria', icon: 'pi pi-fw pi-id-card', routerLink: ['/categorias'] },
           { label: 'Conta Bancária', icon: 'pi pi-fw pi-check-square', routerLink: ['/contas-bancarias'] },
-          { label: 'Metodo de Pagamento', icon: 'pi pi-fw pi-mobile', routerLink: ['/pagamentos'] }
+          { label: 'Metodo de Pagamento', icon: 'pi pi-fw pi-mobile', routerLink: ['/metodos-pagamentos'] }
         ]
       },
       {
